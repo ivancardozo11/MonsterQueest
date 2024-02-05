@@ -1,1 +1,3 @@
 # MonsterQueest
+
+### Monster Queest is aNode.js backend app built with NestJS and MongoDB. It's designed for gamers and explorers, allowing you to keep track of all the mystical creatures you find in your digital adventures. With Monster Quest, you can easily add, view, update, and delete entries for each creature you come across, detailing their names, titles, descriptions, and more. Plus, there's a fun gold balance feature to see which creatures are favorites. Whether you're cataloging your finds or checking out the community's top picks, Monster Queest makes your creature collection journey exciting and straightforward. 🐉✨ ###
