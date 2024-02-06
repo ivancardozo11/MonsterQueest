@@ -34,7 +34,7 @@ npm run start
 
 ## To test the solution:
 
-## Run the app.
+## Run Jest though:
 ```sh
 npm run test
 ```
