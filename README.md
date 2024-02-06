@@ -17,3 +17,24 @@
    Link to code documentation
   </a>
 </p>
+
+## Step 1:
+
+## Install all packages through npm.
+```sh
+npm install
+```
+
+## Step 2:
+
+## Run the app.
+```sh
+npm run start
+```
+
+## To test the solution:
+
+## Run the app.
+```sh
+npm run test
+```
