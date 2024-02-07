@@ -1,4 +1,4 @@
-import { ObjectType, Field, ID } from '@nestjs/graphql';
+import { ObjectType, Field, ID, Int } from '@nestjs/graphql';
 
 @ObjectType()
 export class Monster {
@@ -37,4 +37,7 @@ export class Monster {
 
     @Field()
         monsterPassword!: string;
+
+    @Field(() => Int, { defaultValue: 0 })
+        votes!: number;
 }

@@ -27,14 +27,21 @@ npm install
 
 ## Step 2:
 
-## Run the app.
+## Run development server to watch logs in the console.
+```sh
+npm run dev
+```
+
+OR
+
+## Run prod server .
 ```sh
 npm run start
 ```
 
 ## To test the solution:
 
-## Run Jest though:
+## Run Jest:
 ```sh
 npm run test
 ```

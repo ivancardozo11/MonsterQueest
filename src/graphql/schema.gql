@@ -1,0 +1,62 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+input CreateMonsterDto {
+  description: String
+  gender: String
+  goldBalance: Float
+  health: Float
+  image: String
+  monsterPassword: String!
+  name: String!
+  nationality: [String!]
+  secretNotes: String
+  speed: Float
+  title: String
+}
+
+type Monster {
+  description: String
+  gender: String!
+  goldBalance: Float!
+  health: Float!
+  id: ID!
+  image: String!
+  monsterPassword: String!
+  name: String!
+  nationality: [String!]!
+  secretNotes: String
+  speed: Float!
+  title: String!
+  votes: Int!
+}
+
+type Mutation {
+  addGoldToMonster(amount: Float!, id: String!): Monster!
+  addVoteToMonster(id: String!): Monster!
+  createMonster(createMonsterInput: CreateMonsterDto!): Monster!
+  deleteMonster(id: String!): Boolean!
+  removeGoldFromMonster(amount: Float!, id: String!): Monster!
+  removeVoteFromMonster(id: String!): Monster!
+  updateMonster(id: String!, updateMonsterInput: UpdateMonsterDto!): Monster!
+}
+
+type Query {
+  getAllMonsters: [Monster!]!
+  getMonster(id: String!): Monster
+}
+
+input UpdateMonsterDto {
+  description: String
+  gender: String
+  goldBalance: Float
+  health: Float
+  image: String
+  monsterPassword: String
+  name: String
+  nationality: [String!]
+  secretNotes: String
+  speed: Float
+  title: String
+}

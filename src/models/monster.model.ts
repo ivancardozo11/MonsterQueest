@@ -11,7 +11,8 @@ export const MonsterSchema = new mongoose.Schema({
     speed: Number,
     health: Number,
     secretNotes: String,
-    monsterPassword: String
+    monsterPassword: String,
+    votes: { type: Number, default: 0 }
 }, { timestamps: true });
 
 export interface MonsterDocument extends mongoose.Document {
@@ -26,4 +27,5 @@ export interface MonsterDocument extends mongoose.Document {
     health?: number;
     secretNotes?: string;
     monsterPassword: string;
+    votes: number;
 }
