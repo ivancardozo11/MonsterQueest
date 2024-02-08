@@ -6,6 +6,8 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
 import { MonsterModule } from './modules/monster/monster.module';
 import { CacheService } from './common/services/cache.service';
+import { APP_INTERCEPTOR } from '@nestjs/core';
+import { RateLimitInterceptor } from './common/interceptors/rate-limit.interceptor';
 
 function getEnvironmentVariable (key: string): string {
     const value = process.env[key];
@@ -29,6 +31,12 @@ function getEnvironmentVariable (key: string): string {
             playground: true
         })
     ],
-    providers: [CacheService]
+    providers: [
+        CacheService,
+        {
+            provide: APP_INTERCEPTOR,
+            useClass: RateLimitInterceptor
+        }
+    ]
 })
 export class AppModule {}

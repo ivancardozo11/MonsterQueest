@@ -11,14 +11,6 @@ export class CacheService {
             host: process.env.REDIS_HOST || 'localhost',
             port: process.env.REDIS_PORT ? parseInt(process.env.REDIS_PORT, 10) : 6379
         });
-
-        this.client.on('connect', () => {
-            this.logger.log('Conectado a Redis');
-        });
-
-        this.client.on('error', (err) => {
-            this.logger.error(`Error al conectar a Redis: ${err.message}`);
-        });
     }
 
     async get (key: string): Promise<string | null> {
