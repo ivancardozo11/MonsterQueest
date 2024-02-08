@@ -33,7 +33,7 @@ type Monster {
 }
 
 type Mutation {
-  addGoldToMonster(amount: Float!, id: String!): Monster!
+  addGoldToMostVotedMonster(amount: Float!): Monster!
   addVoteToMonster(id: String!): Monster!
   createMonster(createMonsterInput: CreateMonsterDto!): Monster!
   deleteMonster(id: String!): Boolean!
@@ -43,7 +43,7 @@ type Mutation {
 }
 
 type Query {
-  getAllMonsters: [Monster!]!
+  getAllMonsters(limit: Int = 10, offset: Int = 0): [Monster!]!
   getMonster(id: String!): Monster
 }
 

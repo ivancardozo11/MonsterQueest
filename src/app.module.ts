@@ -5,6 +5,7 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
 import { MonsterModule } from './modules/monster/monster.module';
+import { CacheService } from './common/services/cache.service';
 
 function getEnvironmentVariable (key: string): string {
     const value = process.env[key];
@@ -27,6 +28,7 @@ function getEnvironmentVariable (key: string): string {
             sortSchema: true,
             playground: true
         })
-    ]
+    ],
+    providers: [CacheService]
 })
 export class AppModule {}

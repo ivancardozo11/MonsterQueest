@@ -1,18 +1,21 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable no-unused-vars */
 import * as mongoose from 'mongoose';
 
 export const MonsterSchema = new mongoose.Schema({
-    name: String,
+    name: { type: String, required: true },
     title: String,
     gender: String,
     description: String,
     nationality: [String],
     image: String,
-    goldBalance: Number,
+    goldBalance: { type: Number, default: 0 },
     speed: Number,
     health: Number,
     secretNotes: String,
     monsterPassword: String,
-    votes: { type: Number, default: 0 }
+    votes: { type: Number, default: 0 },
+    votedBy: [{ type: String }]
 }, { timestamps: true });
 
 export interface MonsterDocument extends mongoose.Document {
@@ -28,4 +31,5 @@ export interface MonsterDocument extends mongoose.Document {
     secretNotes?: string;
     monsterPassword: string;
     votes: number;
+    votedBy: string[];
 }
