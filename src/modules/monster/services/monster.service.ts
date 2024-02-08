@@ -108,6 +108,32 @@ export class MonsterService {
         }
     }
 
+    async getMostVotedMonster (): Promise<MonsterDocument> {
+        try {
+            const monster = await this.monsterModel.findOne().sort({ votes: -1 }).exec();
+            if (!monster) {
+                throw new NotFoundException('No monsters found');
+            }
+            return monster;
+        } catch (error) {
+            throw new InternalServerErrorException('Failed to retrieve the most voted monster');
+        }
+    }
+
+    async addGoldToMostVotedMonster (goldAmount: number): Promise<MonsterDocument> {
+        try {
+            const mostVotedMonster = await this.getMostVotedMonster();
+            mostVotedMonster.goldBalance = mostVotedMonster.goldBalance ? mostVotedMonster.goldBalance + goldAmount : goldAmount;
+            await mostVotedMonster.save();
+            return mostVotedMonster;
+        } catch (error) {
+            if (error instanceof NotFoundException) {
+                throw error;
+            }
+            throw new InternalServerErrorException('Failed to add gold to the most voted monster');
+        }
+    }
+
     async delete (id: string): Promise<void> {
         try {
             const result = await this.monsterModel.findByIdAndDelete(id).exec();

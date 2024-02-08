@@ -1,10 +1,12 @@
 /* eslint-disable no-useless-constructor */
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { NotFoundException, UseGuards, InternalServerErrorException, ForbiddenException, UnauthorizedException } from '@nestjs/common';
+import { Args, Mutation, Query, Resolver, Context } from '@nestjs/graphql';
 import { MonsterService } from '../../modules/monster/services/monster.service';
 import { CreateMonsterDto } from '../../../src/modules/monster/dto/create-monster.dto';
 import { UpdateMonsterDto } from '../../../src/modules/monster/dto/update-monster.dto';
 import { Monster } from '../../modules/monster/entities/monster';
-import { NotFoundException, InternalServerErrorException } from '@nestjs/common';
+import { AuthGuard } from '../../common/guard/auth.guard';
+import { GraphQLContext } from '../../common/interfaces/graphql-context.interface';
 
 @Resolver(() => Monster)
 export class MonsterResolver {
@@ -32,6 +34,7 @@ export class MonsterResolver {
     }
 
     @Mutation(() => Monster)
+    @UseGuards(AuthGuard)
     async createMonster (@Args('createMonsterInput') createMonsterInput: CreateMonsterDto) {
         try {
             return await this.monsterService.create(createMonsterInput);
@@ -41,6 +44,7 @@ export class MonsterResolver {
     }
 
     @Mutation(() => Monster)
+    @UseGuards(AuthGuard)
     async updateMonster (@Args('id') id: string, @Args('updateMonsterInput') updateMonsterDto: UpdateMonsterDto) {
         try {
             const updatedMonster = await this.monsterService.update(id, updateMonsterDto);
@@ -54,10 +58,17 @@ export class MonsterResolver {
     }
 
     @Mutation(() => Monster)
+    @UseGuards(AuthGuard)
     async addGoldToMonster (
         @Args('id') id: string,
-            @Args('amount') amount: number
+            @Args('amount') amount: number,
+            @Context() context:GraphQLContext
     ): Promise<Monster> {
+        const userRole = context.req.user.role;
+        if (userRole !== 'CEO') {
+            throw new ForbiddenException('Only the CEO can add gold to monsters.');
+        }
+
         try {
             const updatedMonster = await this.monsterService.addGoldToMonster(id, amount);
             return {
@@ -65,18 +76,22 @@ export class MonsterResolver {
                 id: updatedMonster._id.toString()
             };
         } catch (error) {
-            if (error instanceof NotFoundException) {
-                throw error;
-            }
             throw new InternalServerErrorException('Failed to add gold to monster');
         }
     }
 
     @Mutation(() => Monster)
+    @UseGuards(AuthGuard)
     async removeGoldFromMonster (
         @Args('id') id: string,
-            @Args('amount') amount: number
+            @Args('amount') amount: number,
+            @Context() context: GraphQLContext
     ): Promise<Monster> {
+        const userRole = context.req.user.role;
+        if (userRole !== 'BoredMike') {
+            throw new UnauthorizedException('Only Bored Mike can remove gold from monsters.');
+        }
+
         try {
             const updatedMonster = await this.monsterService.removeGoldFromMonster(id, amount);
             return {
@@ -84,15 +99,22 @@ export class MonsterResolver {
                 id: updatedMonster._id.toString()
             };
         } catch (error) {
-            if (error instanceof NotFoundException) {
-                throw error;
-            }
             throw new InternalServerErrorException('Failed to remove gold from monster');
         }
     }
 
     @Mutation(() => Monster)
-    async addVoteToMonster (@Args('id') id: string): Promise<Monster> {
+    @UseGuards(AuthGuard)
+    async addVoteToMonster (
+        @Args('id') id: string,
+            @Context() context: GraphQLContext // Utiliza el tipo personalizado para el contexto
+    ): Promise<Monster> {
+        // Verificar que el usuario es un empleado
+        const userRole = context.req.user.role;
+        if (userRole !== 'Employee') {
+            throw new UnauthorizedException('Only employees can vote for monsters.');
+        }
+
         try {
             const updatedMonster = await this.monsterService.addVote(id);
             return {
@@ -100,14 +122,12 @@ export class MonsterResolver {
                 id: updatedMonster._id.toString()
             };
         } catch (error) {
-            if (error instanceof NotFoundException) {
-                throw new NotFoundException(`Monster with ID "${id}" not found`);
-            }
             throw new InternalServerErrorException('Failed to add vote to monster');
         }
     }
 
     @Mutation(() => Monster)
+    @UseGuards(AuthGuard)
     async removeVoteFromMonster (@Args('id') id: string): Promise<Monster> {
         try {
             const updatedMonster = await this.monsterService.removeVote(id);
@@ -124,6 +144,7 @@ export class MonsterResolver {
     }
 
     @Mutation(() => Boolean)
+    @UseGuards(AuthGuard)
     async deleteMonster (@Args('id') id: string): Promise<boolean> {
         try {
             await this.monsterService.delete(id);
