@@ -5,7 +5,7 @@
   "main": "main.ts",
   "scripts": {
     "build": "rimraf dist && tsc",
-    "start": "node dist/index.js",
+    "start": "node dist/main.js",
     "dev": "nodemon src/main.ts",
     "test": "jest",
     "lint": "eslint . --ext .ts",

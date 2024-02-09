@@ -3,8 +3,8 @@
 import { NotFoundException, UseGuards, InternalServerErrorException, UnauthorizedException, ForbiddenException, BadRequestException } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver, Context } from '@nestjs/graphql';
 import { MonsterService } from '../../modules/monster/services/monster.service';
-import { CreateMonsterDto } from '../../../src/modules/monster/dto/create-monster.dto';
-import { UpdateMonsterDto } from '../../../src/modules/monster/dto/update-monster.dto';
+import { CreateMonsterDto } from '../../modules/monster/dto/create-monster.dto';
+import { UpdateMonsterDto } from '../../modules/monster/dto/update-monster.dto';
 import { Monster } from '../../modules/monster/entities/monster';
 import { AuthGuard } from '../../common/guard/auth.guard';
 import { GraphQLContext } from '../../common/interfaces/graphql-context.interface';
